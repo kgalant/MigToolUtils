@@ -35,7 +35,7 @@ public class Utils {
 	private static final int debug = 0;
 	
 	public static String checkPathSlash(String p) {
-		if (!p.endsWith(File.separator))
+		if (p != null && p.length() > 0 && !p.endsWith(File.separator))
 			p += File.separator;
 		return p;
 	}
