@@ -1,6 +1,7 @@
 package com.salesforce.migrationtoolutils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,7 +97,7 @@ public class Utils {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(filename), "UTF8"));
+					new FileOutputStream(filename), StandardCharsets.ISO_8859_1));
 			for (String s : toWrite) {
 				writer.write(s);
 				writer.newLine();
@@ -562,7 +563,9 @@ public class Utils {
 				try {
 					Files.move(oldPath, newPath);
 				}  catch (FileAlreadyExistsException e1) {
-					System.out.println("Package merge conflict: file: " + file.getName() + " exists in more than one package.");
+					if (!file.getName().startsWith(".")) {
+						System.out.println("Package merge conflict: file: " + file.getName() + " exists in more than one package.");
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -576,6 +579,18 @@ public class Utils {
  */
 			}
 		}
+	}
+	
+	public static boolean checkIsDirectory(String filename) {
+		File file = new File(filename);
+		return file.isDirectory(); // Check if it's a directory
+
+	}
+	
+	public static boolean checkIfFileExists(String filename) {
+		File file = new File(filename);
+
+		return file.exists();      // Check if the file exists
 	}
 	
 }
