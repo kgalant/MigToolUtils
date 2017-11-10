@@ -47,6 +47,12 @@ public class Utils {
 			f.mkdir();
 		}
 	}
+	
+	public static String readResource(String name) throws IOException {
+		InputStream is = Utils.class.getClassLoader().getResourceAsStream("resources/"+name);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		return readFile(reader);
+	}
 
 	public static String readFile(File f) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(f));
@@ -458,7 +464,7 @@ public class Utils {
 		objToDirMap = new HashMap<String, String>();
 		dirToObjectMap = new HashMap<String, String>();
 		objToSuffixMap = new HashMap<String, String>();
-		String mappings = readFile(".\\resources", "DirToObjectMappings.txt");
+		String mappings = readResource("DirToObjectMappings.txt");
 		String[] lines = mappings.split("\n");
 		for (String line : lines) {
 			String dir = line.substring(0, line.indexOf("="));
@@ -467,13 +473,13 @@ public class Utils {
 			dirToObjectMap.put(dir,  metadata);
 		}
 		
-		mappings = readFile(".\\resources", "ObjectToSuffixMappings.txt");
-		lines = mappings.split("\n");
-		for (String line : lines) {
-			String metadata = line.substring(0, line.indexOf("="));
-			String suffix = line.substring(line.indexOf("=") + 1);
-			objToSuffixMap.put(metadata, suffix);
-		}
+//		mappings = readFile("resources", "ObjectToSuffixMappings.txt");
+//		lines = mappings.split("\n");
+//		for (String line : lines) {
+//			String metadata = line.substring(0, line.indexOf("="));
+//			String suffix = line.substring(line.indexOf("=") + 1);
+//			objToSuffixMap.put(metadata, suffix);
+//		}
 		
 	}
 	
@@ -482,6 +488,13 @@ public class Utils {
 			initMaps();
 		}
 		return objToDirMap.get(metadataType);
+	}
+	
+	public static String getMetadataTypeForDir(String dir) throws IOException {
+		if (objToDirMap == null || dirToObjectMap == null) {
+			initMaps();
+		}
+		return dirToObjectMap.get(dir);
 	}
 	
 	public static String getSuffixForMetadataType(String metadataType) throws IOException {
