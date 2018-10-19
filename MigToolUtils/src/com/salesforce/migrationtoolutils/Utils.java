@@ -49,7 +49,7 @@ public class Utils {
 	}
 	
 	public static String readResource(String name) throws IOException {
-		InputStream is = Utils.class.getClassLoader().getResourceAsStream("resources/"+name);
+		InputStream is = Utils.class.getClassLoader().getResourceAsStream(name);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		return readFile(reader);
 	}
